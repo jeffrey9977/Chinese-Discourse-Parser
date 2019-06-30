@@ -15,8 +15,8 @@ python3.6 parser.py
 
 2. prepare the training data and train 3 models
 
-    model architectures (model_edu.py, model_trans.py, model_rlat.py) are placed in `model_dir/`)
-    the trained model will be placed in `saved_model/`
+    model architectures (model_edu.py, model_trans.py, model_rlat.py) are placed in `model_dir/`
+    and the trained model will be placed in `saved_model/`
 
 ```
 python3.6 main.py --make_dataset --train_edu --train_trans --train_rlat
@@ -30,7 +30,6 @@ python3.6 test.py
 
 4. To predict, run
 
-    to output
 ```
 python3.6 demo.py --input_file $1 --output_file $2 
 ```
