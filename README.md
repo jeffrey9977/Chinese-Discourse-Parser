@@ -4,7 +4,7 @@ Chinese Discourse Parser implemented with transition based method
 
 # How to run
 
-1. Preprocess the raw data and store in `./train` and `./test`:
+1. Preprocess the raw data and store the result in `./train` and `./test`:
     
     convert xml to csv 
     use bs4 BeautifulSoup (parser.py)
