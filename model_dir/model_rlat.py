@@ -104,7 +104,8 @@ class ModelRlat():
         )
 
         for epoch in range(10): 
-            running_loss = 0.0
+            running_loss_1 = 0.0
+            running_loss_2 = 0.0
             self.model.train()
             i = 0
 
@@ -128,8 +129,8 @@ class ModelRlat():
 
                 center,relation = self.model(sent1_torch.view(self.batch_size,-1),sent2_torch.view(self.batch_size,-1),mask1_torch.view(self.batch_size,-1),mask2_torch.view(self.batch_size,-1))
 
-                relation_loss = self.loss_function(center.view(self.batch_size,self.model.tagset_size_relation),relation_torch.view(self.batch_size))
-                center_loss = self.loss_function(relation.view(self.batch_size,self.model.tagset_size_center),center_torch.view(self.batch_size))
+                relation_loss = self.loss_function(relation.view(self.batch_size,self.model.tagset_size_relation),relation_torch.view(self.batch_size))
+                center_loss = self.loss_function(center.view(self.batch_size,self.model.tagset_size_center),center_torch.view(self.batch_size))
 
                 loss = []
                 loss.append(center_loss)
@@ -185,7 +186,7 @@ class ModelRlat():
                       desc=phase)
 
         self.model.eval()
-        for step, (sent1, mask1, sent2, mask2, sent3, mask3, relaton,center) in trange:
+        for step, (sent1, mask1, sent2, mask2, relation, center) in trange:
             # if step == 10:
             #     break
             sent1_torch = torch.tensor(sent1,dtype=torch.long).cuda()
@@ -207,35 +208,35 @@ class ModelRlat():
                     n_corrects += 1
                 else:
                     n_wrongs += 1
-            total += len(idx)
+            total += len(relation_idx)
 
             for j in range(0, len(relation_idx)):
                 if relation_idx[j] == 0:
                     t0 +=1
-                if relation_idx[j] == 0:
+                if relation_idx[j] == 1:
                     t1 +=1
-                if relation_idx[j] == 0:
+                if relation_idx[j] == 2:
                     t2 +=1
-                if relation_idx[j] == 0:
+                if relation_idx[j] == 3:
                     t3 +=1
 
             for j in range(0, len(relation_idx)):
                 if relation_torch.view(-1)[j] == 0:
                     l0 +=1
-                if relation_torch.view(-1)[j] == 0:
+                if relation_torch.view(-1)[j] == 1:
                     l1 +=1
-                if relation_torch.view(-1)[j] == 0:
+                if relation_torch.view(-1)[j] == 2:
                     l2 +=1
-                if relation_torch.view(-1)[j] == 0:
+                if relation_torch.view(-1)[j] == 3:
                     l3 +=1
 
+        print("\n")
         print('causality = ',t0," ans = ",l0)
         print('coordination = ',t1," ans = ",l1)
         print('transition = ',t2," ans = ",l2)
         print('explanation = ',t3," ans = ",l3)
 
-        print("\n")
         print(total," ",n_corrects," ",n_wrongs)
-        acc = float(n_correct)/float(total)
+        acc = float(n_corrects)/float(total)
         acc *= 100
         print("the accuracy of "+ phase + " data is: ",acc,"%")

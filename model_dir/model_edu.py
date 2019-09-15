@@ -108,7 +108,7 @@ class ModelEDU():
                           desc='modelEDU train')
 
             for step, (sent1, mask1, sent2, mask2, sent3, mask3, label) in trange:
-
+                break
                 sent1_torch = torch.tensor(sent1,dtype=torch.long).cuda()
                 sent2_torch = torch.tensor(sent2,dtype=torch.long).cuda()
                 sent3_torch = torch.tensor(sent3,dtype=torch.long).cuda()
@@ -149,7 +149,7 @@ class ModelEDU():
 
     def test(self):
         self.model.load_state_dict(torch.load("saved_model/model_edu.pkl.8")) # load pretrained model
-        self.model_1.eval()
+        self.model.eval()
 
         with torch.no_grad():
             self.test_accuracy("train", train_data)
