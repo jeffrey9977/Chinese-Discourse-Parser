@@ -1,5 +1,5 @@
 
-Chinese Discourse Parser implemented with transition based method
+Transition based Chinese Discourse Parser
 ===
 
 # How to run
